@@ -104,7 +104,7 @@ public class MainPageObject {
         WebElement element = waitForElementPresent(
                 by,
                 error_message,
-                10
+                15
         );
 
         int left_x = element.getLocation().getX();
@@ -116,7 +116,7 @@ public class MainPageObject {
         TouchAction action = new TouchAction(driver);
         action
                 .press(right_x, middle_y)
-                .waitAction(150)
+                .waitAction(500)
                 .moveTo(left_x, middle_y)
                 .release().perform();
 
@@ -134,6 +134,14 @@ public class MainPageObject {
         if (amount_of_elements > 0) {
             String default_message = "An element '" + by.toString() + "' supposed to be not present";
             throw new AssertionError(default_message + " " + error_message);
+        }
+    }
+
+    private void assertElementPresent(By by, String error_message)
+    {
+        int amount_of_elements = getAmountOfElements(by);
+        if (amount_of_elements == 0) {
+            throw new AssertionError(error_message);
         }
     }
 

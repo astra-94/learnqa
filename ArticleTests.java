@@ -4,11 +4,12 @@ import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 public class ArticleTests extends CoreTestCase
 {
     @Test
-    public void testCompareArticleTTitle()
+    public void testCompareArticleTitle()
     {
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
@@ -39,6 +40,23 @@ public class ArticleTests extends CoreTestCase
         ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
         ArticlePageObject.waitForTitleElement();
         ArticlePageObject.swipeToFooter();
+
+    }
+
+    @Test
+    public void testAssertTitle()
+    {
+
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        String search_line = "Linkin Park Diskography";
+        SearchPageObject.typeSearchLine(search_line);
+        SearchPageObject.clickByArticleWithTitle("Linkin Park discography");
+
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject.waitForTitleOfArticle();
+        ArticlePageObject.assertThereIsTitleOnThePage();
 
     }
 }

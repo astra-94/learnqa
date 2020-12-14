@@ -10,6 +10,9 @@ public class SearchPageObject extends MainPageObject{
     SEARCH_INPUT = "//*[contains(@text,'Search…')]",
     SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
     SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
+
+    SEARCH_RESULT_BY_TITLE_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='{TITLE}']",
+    SEARCH_RESULT_BY_INDEX_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@index='{INDEX}']",
     SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
     SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']";
 
@@ -21,6 +24,20 @@ public class SearchPageObject extends MainPageObject{
     private static String getResultSearchElement(String substring)
     {
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
+    }
+    /* TEMPLATES METHODS */
+
+    /* TEMPLATES METHODS */
+    private static String getResultSearchElementByTitle(String title)
+    {
+        return SEARCH_RESULT_BY_TITLE_TPL.replace("{TITLE}", title);
+    }
+    /* TEMPLATES METHODS */
+
+    /* TEMPLATES METHODS */
+    private static String getResultSearchElementByIndex(String index)
+    {
+        return SEARCH_RESULT_BY_INDEX_TPL.replace("{INDEX}", index);
     }
     /* TEMPLATES METHODS */
 
@@ -56,11 +73,31 @@ public class SearchPageObject extends MainPageObject{
         this.waitForElementPresent(By.xpath(search_result_xpath), "Cannot find search result with substring " + substring);
     }
 
+    public void waitForSearchResultByIndex(String index)
+    {
+        String search_result_xpath = getResultSearchElementByIndex(index);
+        this.waitForElementPresent(By.xpath(search_result_xpath), "Cannot find search result with index " + index);
+    }
+
+    public void waitForDisappearSearchResultByIndex(String index)
+    {
+        String search_result_xpath = getResultSearchElementByIndex(index);
+        this.waitForElementNotPresent(By.xpath(search_result_xpath), "Search result with index " + index + "is still here", 5);
+    }
+
     public void clickByArticleWithSubstring(String substring)
     {
         String search_result_xpath = getResultSearchElement(substring);
         this.waitForElementAndClick(By.xpath(search_result_xpath), "Cannot find and click search result with substring " + substring, 10);
     }
+
+    public void clickByArticleWithTitle(String title)
+    {
+        String search_result_xpath = getResultSearchElementByTitle(title);
+        this.waitForElementAndClick(By.xpath(search_result_xpath), "Cannot find and click search result with title " + title, 10);
+    }
+
+
 
     public int getAmountOfFoundArticles()
     {

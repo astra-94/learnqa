@@ -67,36 +67,11 @@ public class SearchTests extends CoreTestCase
         SearchPageObject.initSearchInput();
         String search_line = "Cat";
         SearchPageObject.typeSearchLine(search_line);
-
-        waitForElementPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@index='0']"),
-                "Cannot find first result",
-                5
-        );
-
-        waitForElementPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@index='1']"),
-                "Cannot find second result",
-                5
-        );
-
-        waitForElementAndClick(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "Cannot find X to cancel search",
-                5
-        );
-
-        waitForElementNotPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@index='0']"),
-                "First result is still present on the page",
-                5
-        );
-
-        waitForElementNotPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@index='1']"),
-                "Second result is still present on the page",
-                5
-        );
+        SearchPageObject.waitForSearchResultByIndex("0");
+        SearchPageObject.waitForSearchResultByIndex("1");
+        SearchPageObject.clickCancelSearch();
+        SearchPageObject.waitForDisappearSearchResultByIndex("0");
+        SearchPageObject.waitForDisappearSearchResultByIndex("1");
 
     }
 }
